@@ -1,0 +1,161 @@
+#include<iostream>
+using namespace std;
+
+class Queue{
+private:
+    int front, rear;
+    string NAMES[5];
+public:
+    Queue()
+    {
+        front = rear = -1;
+    }
+    bool isEmpty()
+    {
+        if(rear == -1 && front == -1) return true;
+        return false;
+    }
+    bool isFull(){if((rear+1)%5 == front) return true;   return false;}
+    void enQueue(string name)
+    {
+        if(isFull())
+        {
+            cout << "Overflow!\nQueue is full.\n" << endl;
+            return;
+        }
+        else if(isEmpty())
+        {
+            front = 0;
+            rear = 0;
+            NAMES[rear] = name;
+        }
+        else
+        {
+            rear = (rear+1)%5;
+            NAMES[rear] = name;
+        }
+    }
+    string deQueue()
+    {
+        string val;
+        if(isEmpty())
+        {
+            cout << "Underflow!\nQueue is empty.\n" << endl;
+            return "";
+        }
+        else if(front == rear)
+        {
+            val = NAMES[front];
+            front = -1;
+            rear = -1;
+            return val;
+        }
+        else {
+            val = NAMES[front];
+            NAMES[front] = "";
+            front = (front+1)%5;
+            return val;
+        }
+    }
+    void display()
+    {
+    	int front_copy = front;
+        if(isEmpty())
+        {
+            cout << "Queue is empty." << endl;
+        }
+        else{
+    	if(isFull())
+    	{
+			for(int i = front; i <= rear; i++)
+			{
+				cout << NAMES[i] << " ";
+			}
+	}
+		else{
+    	while(NAMES[front_copy] != "")
+    	{
+    		cout << NAMES[front_copy] << " ";
+    		front_copy = (front_copy + 1)%5;
+    		
+		}
+	}
+        }
+	}
+    bool search(string check)
+    {
+    	int front_copy = front;
+        if(isEmpty())
+        {
+            cout << "Queue is empty." << endl;
+        }
+        else{
+    	if(isFull())
+    	{
+			for(int i = front; i <= rear; i++)
+			{
+				if(NAMES[i] == check)
+    		{
+    			return true;
+			}
+			}
+	}
+		else{
+    	while(NAMES[front_copy] != "")
+    	{
+    		if(NAMES[front_copy] == check)
+    		{
+    			return true;
+			}
+    		front_copy = (front_copy + 1)%5;
+		}
+	}
+        }
+        
+         return false;
+     }
+};
+
+int main()
+{
+    Queue q;
+    if(q.isEmpty()) cout << "Queue is empty.\n" << endl;
+    else cout << "Queue is not empty.\n" << endl;
+    q.enQueue("Awais");
+    q.enQueue("Ahmad");
+    if(q.isFull()) cout << "Queue is full.\n" << endl;
+	else cout << "Queue is not full.\n" << endl;
+	q.enQueue("Usama");
+	q.enQueue("Irfan");
+	q.enQueue("Shahraiz");
+	q.display();
+	if(q.isFull()) cout << "Queue is full.\n" << endl;
+	else cout << "Queue is not full.\n" << endl;
+	if(q.isEmpty()) cout << "Queue is empty.\n" << endl;
+    else cout << "Queue is not empty.\n" << endl;
+    q.enQueue("Usman");
+    q.deQueue();
+    q.deQueue();
+    if(q.isFull()) cout << "Queue is full.\n" << endl;
+	else cout << "Queue is not full.\n" << endl;
+    if(q.isEmpty()) cout << "Queue is empty.\n" << endl;
+    else cout << "Queue is not empty.\n" << endl;
+    q.enQueue("Asif");
+    q.display();
+    q.deQueue();
+    q.deQueue();
+    q.deQueue();
+    q.deQueue();
+    if(q.isFull()) cout << "Queue is full.\n" << endl;
+	else cout << "Queue is not full.\n" << endl;
+    if(q.isEmpty()) cout << "Queue is empty.\n" << endl;
+    else cout << "Queue is not empty.\n" << endl;
+    q.deQueue();
+    q.enQueue("Mohsin");
+    q.enQueue("Ali");
+    q.enQueue("Hamza");
+     if(q.search("Ali")) cout << "Searched name is present in queue.\n" << endl;
+     else cout << "Searched name is not present in queue.\n" << endl;
+    
+    system("pause");
+}
