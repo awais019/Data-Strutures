@@ -52,7 +52,6 @@ public:
         }
         else {
             val = NAMES[front];
-            NAMES[front] = "";
             front = (front+1)%5;
             return val;
         }
@@ -60,57 +59,57 @@ public:
     void display()
     {
     	int front_copy = front;
+    	string val;
         if(isEmpty())
         {
-            cout << "Queue is empty." << endl;
+            cout << "Underflow!\nQueue is empty.\n" << endl;
+            return;
         }
-        else{
-    	if(isFull())
-    	{
-			for(int i = front; i <= rear; i++)
-			{
-				cout << NAMES[i] << " ";
-			}
-	}
-		else{
-    	while(NAMES[front_copy] != "")
-    	{
-    		cout << NAMES[front_copy] << " ";
-    		front_copy = (front_copy + 1)%5;
-    		
-		}
-	}
+        else 
+        {
+		while(front_copy!= -1)
+		{
+        if(front_copy == rear)
+        {
+            val = NAMES[front_copy];
+            front_copy = -1;
+            cout << val << " ";
         }
-	}
+        else {
+            val = NAMES[front_copy];
+            
+            front_copy = (front_copy+1)%5;
+            cout << val << " ";
+        }
+    }
+    }
+}
+        
     bool search(string check)
     {
+    	string val;
     	int front_copy = front;
         if(isEmpty())
         {
             cout << "Queue is empty." << endl;
         }
-        else{
-    	if(isFull())
-    	{
-			for(int i = front; i <= rear; i++)
-			{
-				if(NAMES[i] == check)
-    		{
-    			return true;
-			}
-			}
-	}
-		else{
-    	while(NAMES[front_copy] != "")
-    	{
-    		if(NAMES[front_copy] == check)
-    		{
-    			return true;
-			}
-    		front_copy = (front_copy + 1)%5;
-		}
-	}
+        else 
+        {
+		while(front_copy!= -1)
+		{
+        if(front_copy == rear)
+        {
+            val = NAMES[front_copy];
+            front_copy = -1;
+            if(val == check) return true;
         }
+        else {
+            val = NAMES[front_copy];
+            front_copy = (front_copy+1)%5;
+            if(val == check) return true;
+			        }
+    }
+    }
         
          return false;
      }
