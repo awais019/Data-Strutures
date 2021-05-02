@@ -1,0 +1,168 @@
+#include<iostream>
+using namespace std;
+
+struct Node{
+    Node *previous;
+    int data;
+    Node *next;
+};
+
+class Doubly_Linked_List{
+    private:
+    Node *head;
+    Node *create(int data)
+    {
+        Node *new_Node = new Node;
+        new_Node->previous = NULL;
+        new_Node->data = data;
+        new_Node->next = NULL;
+    }
+    public:
+    Doubly_Linked_List()
+    {
+        head = NULL;
+    }
+    void insert_Start(int data)
+    {
+        Node *new_Node = create(data);
+        if(head == NULL)
+        {
+            head = new_Node;
+        }
+        else{
+            new_Node->next = head;
+            head->previous = new_Node;
+            head = new_Node;
+        }
+    }
+    void insert_Last(int data)
+    {
+        Node* new_Node = create(data);
+        if(head == NULL)
+        {
+            head = new_Node;
+        }
+        else{
+            Node* temp = head;
+            while(temp->next != NULL)
+            {
+                temp = temp->next;
+            }
+            new_Node->previous = temp;
+            temp->next = new_Node;
+        }
+    }
+    void insert_After(int data, int position)
+    {
+        int i;
+        Node* new_Node = create(data);
+        Node* temp = head;
+        for(i = 1; i < position; i++)
+        {
+            temp = temp->next;
+            if(temp == NULL)
+            {
+                cout << position << " is greater than size of list." << endl;
+                return;
+            }
+        }
+        if(i == position)
+        {
+            new_Node->previous = temp;
+            new_Node->next = temp->next;
+            temp->next = new_Node;
+        }
+    }
+    void delete_Start()
+    {
+        Node *delete_Node = head;
+        head = delete_Node->next;
+        head->previous = NULL;
+        delete delete_Node;
+    }
+    void delete_Last()
+    {
+        Node* temp = head;
+        while(temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        Node* delete_Node = temp->next;
+        temp->next = NULL;
+        delete delete_Node;
+    }
+    void delete_After(int position)
+    {
+        int i;
+        Node *temp = head;
+        for(i = 1; i < position; i++)
+        {
+            temp = temp->next;
+            if(temp == NULL)
+            {
+                cout << "Overflow! size of list is lesser than " << position << endl;
+                return;
+            }
+        }
+        if(i == position)
+        {
+            Node *delete_Node;
+            delete_Node = temp->next;
+            if(delete_Node->next != NULL)
+            delete_Node->next->previous = temp;
+            temp->next = delete_Node->next;
+            delete delete_Node;
+        }
+    }
+    void search(int item)
+    {
+        Node *temp = head;
+        while(temp != NULL)
+        {
+            if(temp->data == item)
+            {
+                cout << item << " is present in list." << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << item << " is not present in list." << endl;
+
+    }
+    void display()
+    {
+        Node* temp = head;
+        while(temp != NULL)
+        {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl << endl;
+    }
+
+};
+
+int main()
+{
+    Doubly_Linked_List DLL;
+    DLL.insert_Start(10);
+    DLL.insert_Start(20);
+    DLL.display();
+    DLL.insert_Start(30);
+    DLL.display();
+    DLL.insert_Last(40);
+    DLL.insert_Start(0);
+    DLL.display();
+    DLL.insert_After(5,3);
+    DLL.display();
+    DLL.delete_Start();
+    DLL.delete_Start();
+    DLL.display();
+    DLL.delete_Last();
+    DLL.delete_Last();
+    DLL.display();
+    DLL.delete_After(1);
+    DLL.display();
+    DLL.search(30);
+    system("pause");
+}
