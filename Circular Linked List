@@ -14,6 +14,7 @@ class Circular_Linked_List{
 			Node *new_Node = new Node;
 			new_Node->data = data;
 			new_Node->next = NULL;
+			return new_Node;
 		}
 	public:
 		Circular_Linked_List()
