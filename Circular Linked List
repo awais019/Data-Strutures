@@ -1,0 +1,189 @@
+#include<iostream>
+using namespace std;
+
+struct Node{
+	int data;
+	Node *next;
+};
+
+class Circular_Linked_List{
+	private:
+		Node *head;
+		Node* create(int data)
+		{
+			Node *new_Node = new Node;
+			new_Node->data = data;
+			new_Node->next = NULL;
+		}
+	public:
+		Circular_Linked_List()
+		{
+			head = NULL;
+		}
+		void insert_Start(int data)
+		{
+			Node *new_Node = create(data);
+			if(head == NULL)
+			{
+				head = new_Node;
+				new_Node->next = head;
+			}
+			else{
+				new_Node->next = head;
+				Node* temp = head;
+			do
+			{
+			temp = temp->next;
+			}while(temp->next != head);
+			head = new_Node;
+			temp->next = head;
+			}
+		}
+		void insert_Last(int data)
+		{
+			Node *new_Node = create(data);
+			if(head == NULL)
+			{
+				head = new_Node;
+				new_Node->next = head;
+			}
+			else{
+			Node* temp = head;
+			do
+			{
+			temp = temp->next;
+			}while(temp->next != head);
+			new_Node->next = temp->next;
+			temp->next = new_Node;
+			}
+		}
+		void insert_After(int data, int position)
+		{
+			int i;
+			Node *new_Node = create(data);
+			Node *temp = head;
+			for(i = 1; i < position; i++)
+			{
+				temp = temp->next;
+				if(temp == head)
+				{
+				cout << position << " is greater than the size of list." << endl;
+				return;
+			}
+			}
+			if(i == position)
+			{
+				new_Node->next = temp->next;
+				temp->next = new_Node;
+			}
+			
+		}
+		void delete_Start()
+		{
+			if(head == NULL)
+			{
+				cout << "Underflow! list is empty." << endl;
+			}
+			else{
+			Node* temp = head;
+			Node *delete_Node = head;
+			do
+			{
+			temp = temp->next;
+			}while(temp->next != head);
+			head = delete_Node->next;
+			temp->next = head;
+			delete delete_Node;
+			}
+		}
+		void delete_Last()
+		{
+			if(head == NULL)
+			{
+				cout << "Underflow! list is empty." << endl;
+			}
+			else{
+			Node* temp = head;
+			do
+			{
+			temp = temp->next;
+			}while(temp->next->next != head);
+			Node *delete_Node = temp->next;
+			temp->next = head;
+			delete delete_Node;
+			}
+		}
+		void delete_After(int position)
+		{
+			int i;
+			Node *temp = head;
+			if(head == NULL)
+			{
+				cout << "Underflow! list is empty" << endl;
+			}
+			else {
+				for(i = 1; i < position; i++)
+				{
+					temp = temp->next;
+					if(temp == head)
+					{
+						cout << position << " greater than size of list." << endl;
+						return;
+					}
+				}
+				if(i == position)
+				{
+					Node *delete_Node = temp->next;
+					temp->next = temp->next->next;
+					delete delete_Node;
+				}
+			}
+		}
+		void search(int item)
+		{
+			Node* temp = head;
+			int count = 1;
+			do
+			{
+				if(temp->data == item)
+				{
+				cout << item << " is present in list at " << count << endl;
+				return;
+				}
+				count = count+1;
+
+				temp = temp->next;
+			}while(temp != head);	
+		}
+		void display()
+		{
+			Node* temp = head;
+			do
+			{
+				cout << temp->data << " ";
+				temp = temp->next;
+			}while(temp != head);
+			cout << endl << endl;
+		}
+};
+
+int main()
+{
+	Circular_Linked_List CLL;
+	CLL.insert_Start(40);
+	CLL.insert_Start(30);
+	CLL.insert_Start(20);
+	CLL.insert_Start(10);
+	CLL.insert_Start(0);
+	CLL.insert_Start(-10);
+	CLL.insert_Start(-20);
+	CLL.display();
+	CLL.insert_Last(50);
+	CLL.insert_After(5, 8);
+	CLL.delete_Start();
+	CLL.delete_Last();
+	CLL.delete_After(1);
+	CLL.display();
+	CLL.search(10);
+	system("pause");
+}
