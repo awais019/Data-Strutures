@@ -1,0 +1,64 @@
+#include<iostream>
+using namespace std;
+template<typename T>
+
+struct S_Node{
+	T data;
+	S_Node *next;
+	S_Node(T data)
+	{
+		this->data = data;
+		next = NULL;
+	}
+};
+template<typename T>
+class Stack{
+	S_Node<T> *top;
+	public:
+	Stack()
+	{
+		top = NULL;
+	}
+		void push(T data)
+	{
+		S_Node<T> *new_Node = new S_Node<T>(data);
+		if(top == NULL)
+		{
+			top = new_Node;
+		}
+		else
+		{
+			new_Node->next = top;
+			top = new_Node;
+		}
+	}
+	T pop()
+	{
+		if(top != NULL)
+		{
+		S_Node<T> *todelete = top;
+		top = top->next;
+		T data = todelete->data;
+		delete todelete;
+		return data;
+		}
+	}
+	void display()
+	{
+		S_Node<T> *temp = top;
+		while(temp != NULL)
+		{
+			cout << temp->data << endl;
+			temp = temp->next;
+		}
+	}
+};
+
+int main()
+{
+	Stack<int> s;
+	s.push(19);
+	s.push(20);
+	s.display();
+	return 0;
+}
