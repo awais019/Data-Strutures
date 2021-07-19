@@ -1,0 +1,107 @@
+#include <iostream>
+using namespace std;
+
+template <typename T>
+class Arraylist
+{
+    T *arr;
+    int totalSize;
+    int size;
+
+public:
+    Arraylist(int size = 10)
+    {
+        // cout << "Making a new array of size " << size << endl;
+        arr = new T[size];
+        totalSize = size;
+        this->size = 0;
+    }
+    void resize()
+    {
+        if (size == totalSize - 1)
+        {
+            // cout << "Resizing" << endl;
+
+            T *temp = arr;
+            arr = NULL;
+
+            arr = new T[totalSize + 10];
+            totalSize = totalSize + 10;
+            for (int i = 0; i < size; i++)
+            {
+                arr[i] = temp[i];
+            }
+            temp = NULL;
+            // cout << "New size: " << totaSize << endl;
+        }
+    }
+    void add(T data)
+    {
+        resize();
+        // cout << "Size of array is: " << size << endl;
+        arr[size++] = data;
+    }
+    void addAt(T data, int pos)
+    {
+    	resize();
+    	size++;
+    	int i;
+    	for(i = size; i > pos; i--)
+    	{
+        arr[i] = arr[i-1];
+		}
+		arr[i] = data;
+	}
+    T get(int i)
+    {
+    	if(i <= size)
+    	return arr[i];
+	}
+    // void add(T data[]) {
+    //     int arrSize = 0;
+    //     arrSize = sizeof(data)/sizeof(data[0]);
+    //     arrSize = 0;
+    //     for (int i = 0; i < 10; i++) {
+    //         add(data[i]);
+    //     }
+    // }
+    void remove(int i)
+    {
+    		for(int k = i+1; k < size; k++)
+    		{
+    			arr[i] = arr[k];
+    			i++;
+			}
+		size--;
+	}
+    void print()
+    {
+        // if (arr != NULL)
+        // {
+        for (int i = 0; i < size; i++)
+        {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+        // }
+    }
+    int getSize() {return size;}
+};
+int main()
+{
+    Arraylist<string> arr;
+    arr.add("A");
+    arr.add("B");
+    arr.add("C");
+    arr.add("D");
+    arr.add("E");
+    arr.add("F");
+    arr.add("G");
+    arr.add("H");
+    arr.add("I");
+    cout << arr.get(1) << endl;
+    cout << "Size of array: " << arr.getSize() << endl;
+    arr.print();
+    arr.addAt("K", 3);
+    arr.print();
+}
