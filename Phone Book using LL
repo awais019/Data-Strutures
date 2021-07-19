@@ -1,0 +1,160 @@
+#include<iostream>
+using namespace std;
+
+struct Node{
+	string name;
+	string city;
+	string ph;
+	Node *next;
+	public:
+	Node(string name, string city, string ph)
+	{
+		this->name = name;
+		this->city = city;
+		this->ph = ph;
+		this->next = NULL;
+	}
+	Node(Node *node)
+	{
+		this->name = node->name;
+		this->city = node->city;
+		this->ph = node->ph;
+		this->next = NULL;
+	}
+	void display()
+	{
+		cout << "Name: " << name << endl;
+		cout << "City: " << city << endl;
+		cout << "Number: " << ph << endl << endl; 
+	}
+};
+
+class PhoneBook{
+	Node *head;
+	public:
+		PhoneBook()
+		{
+			head = NULL;
+		}
+		bool compare(string name1, string name2)
+		{
+			if(name1 > name2)
+			{
+				return true;
+			}
+			return false;
+		}
+		void insert(Node *newNode)
+		{
+			if(head == NULL)
+			{
+				head = newNode;
+			}
+			else if(compare(head->name, newNode->name) || head->next == NULL)
+			{
+				if(compare(head->name, newNode->name))
+				{
+				newNode->next = head;
+				head = newNode;
+				}
+				else
+				{
+					head->next = newNode;
+				}
+			}
+			else {
+				Node *temp = head;
+				while(temp->next != NULL)
+				{
+					if(!(compare(temp->name, newNode->name)) && compare(temp->next->name,newNode->name))
+					{
+						newNode->next = temp->next;
+						temp->next = newNode;
+						return;
+					}
+					temp = temp->next;
+				}
+				temp->next = newNode;
+			}
+		}
+		PhoneBook* search(string data, string type)
+		{
+			PhoneBook *list = new PhoneBook();
+			Node* temp = head;
+			if(type == "name")
+			{
+			while(temp != NULL)
+			{
+			
+				if(temp->name == data)
+				{
+						Node *node = new Node(temp);
+						list->insert(node);
+				}
+				temp = temp->next;
+			}
+			}
+			else if(type == "city")
+			{
+				while(temp != NULL)
+			{
+				if(temp->city == data)
+				{
+						Node *node = new Node(temp);
+						list->insert(node);
+				}
+				temp = temp->next;
+			}
+			}
+			else if(type == "phone")
+			{
+				while(temp != NULL)
+			{
+				if(temp->ph == data)
+				{
+					Node *node = new Node(temp);
+					list->insert(node);
+				}
+				temp = temp->next;
+			}
+			}	
+			else{
+				cout << "no such property exit" << endl;
+			}		
+			return list;
+		}
+		void display()
+		{
+			Node *temp = head;
+			while(temp != NULL)
+			{
+				temp->display();
+				cout << endl;
+				temp = temp->next;
+			}
+		}
+};
+
+int main()
+{
+	PhoneBook pb;
+
+	pb.insert(new Node("Muhammad Awais", "Sahiwal", "03424599274"));
+	
+//	pb.display();
+	
+
+	
+	pb.insert(new Node("Ali Shan", "Okara", "03---------"));
+//	pb.display();
+
+	pb.insert(new Node("Hamza Mujahid", "Okara", "03---------"));
+//	pb.display();
+	
+	PhoneBook *pb1 = pb.search("Muhammad Awais", "name");
+	pb1->display();
+	
+	
+
+	return 0;
+}
