@@ -1,0 +1,287 @@
+#include<iostream>
+using namespace std;
+
+
+struct House{
+	int house_No;
+	House *next;
+	House(int house_No)
+	{
+		this->house_No = house_No;
+		this->next = NULL;
+	} 
+};
+
+struct Street{
+	int str_No;
+	House *houses;
+	Street *next;
+	Street(int str_No, House *houses)
+	{
+		this->str_No = str_No;
+		this->next = NULL;
+		this->houses = houses;
+	}
+};
+
+struct Sector{
+	char sec_Name;
+	Street *streets;
+	Sector *next;
+	Sector(char sec_Name, Street *streets)
+	{
+		this->sec_Name = sec_Name;
+		this->streets = streets;
+		this->next = NULL;
+	}
+};
+
+struct Block{
+	char block_Name;
+	Sector *sectors;
+	Block *next;
+	Block(char block_Name, Sector *sectors)
+	{
+		this->block_Name = block_Name;
+		this->sectors = sectors;
+		this->next = NULL;
+	}
+};
+
+
+class House_Class{
+	House *head;
+	public:
+		House_Class()
+		{
+			head = NULL;
+		}
+		void setHead(House *head)
+		{
+			this->head = head;
+		}
+		House* getHead()
+		{
+			return head;
+		}
+		void insert(int data)
+		{
+			House *newNode = new House(data);
+			if(head == NULL)
+			{
+				head = newNode;
+			}
+			else{
+				House *temp = head;
+				while(temp->next != NULL)
+				{
+					temp = temp->next;
+				}
+				temp->next = newNode;
+			}
+		}
+		void display()
+		{
+			House *temp = head;
+			while(temp != NULL)
+			{
+				cout << "			House " << temp->house_No << endl;
+				temp = temp->next;
+			}
+		}
+	
+};
+
+class Street_Class{
+	Street *head;
+	public:
+		Street_Class()
+		{
+			head = NULL;
+		}
+		void setHead(Street *head)
+		{
+			this->head = head;
+		}
+		Street *getHead()
+		{
+			return head;	
+		}
+		void insert(int data, House *house)
+		{
+			Street *newNode = new Street(data, house);
+			if(head == NULL)
+			{
+				head = newNode;
+			}
+			else{
+				Street *temp = head;
+				while(temp->next != NULL)
+				{
+					temp = temp->next;
+				}
+				temp->next = newNode;
+			}
+		}
+		void display()
+		{
+			Street *temp = head;
+			House_Class houses;
+			while(temp != NULL)
+			{
+				cout << "		Street " << temp->str_No << endl;
+				houses.setHead(temp->houses);
+				houses.display();
+				houses.setHead(NULL);
+				temp = temp->next;
+			}
+		}
+};
+
+class Sector_Class{
+	Sector *head;
+	public:
+		Sector_Class()
+		{
+			head = NULL;
+		}
+		void setHead(Sector *head)
+		{
+			this->head = head;			
+		}
+		Sector* getHead()
+		{
+			return head;
+		}
+		void insert(char data, Street *street)
+		{
+			Sector *newNode = new Sector(data, street);
+			if(head == NULL)
+			{
+				head = newNode;
+			}
+			else{
+				Sector *temp = head;
+				while(temp->next != NULL)
+				{
+					temp = temp->next;
+				}
+				temp->next = newNode;
+			}
+		}
+		void display()
+		{
+			Sector *temp = head;
+			Street_Class streets;
+			while(temp != NULL)
+			{
+				cout << "	Sector " << temp->sec_Name << endl;
+				streets.setHead(temp->streets);
+				streets.display();
+				streets.setHead(NULL);
+				temp = temp->next;
+			}
+		}
+};
+
+class Block_Class{
+	Block *head;
+	public:
+		Block_Class()
+		{
+			head = NULL;
+		}	
+		void insert(char data, Sector *sector)
+		{
+			Block *newNode = new Block(data, sector);
+			if(head == NULL)
+			{
+				head = newNode;
+			}
+			else{
+				Block *temp = head;
+				while(temp->next != NULL)
+				{
+					temp = temp->next;
+				}
+				temp->next = newNode;
+			}
+		}
+		void display()
+		{
+			Block *temp = head;
+			Sector_Class sector;
+			while(temp != NULL)
+			{
+				cout << "Block " << temp->block_Name << endl;
+				sector.setHead(temp->sectors);
+				sector.display();
+				sector.setHead(NULL);
+				temp = temp->next;
+			}
+		}
+};
+
+class Society{
+	string name;
+	House_Class house;
+	Street_Class street;
+	Sector_Class sector;
+	Block_Class block;
+	int b, s,st,h;
+	int a = 0;
+	int c = 0;
+	int d = 0;
+	public:
+		Society()
+		{
+			cout << "Enter name of society: ";
+			getline(cin, name);
+			cout << "Enter no. of blocks in society: ";
+	cin >> b;
+	for(int i = 0; i < b; i++)
+	{
+		char ch = 'A' + i;
+		cout << "Enter no. of sectors in block " << ch << ": ";
+		cin >> s;
+		for(int j = 0; j < s; j++)
+		{
+			char ch = 'A' + a;
+			cout << "Enter no. of streets in sector " << ch << ": ";
+			cin >> st;
+			for(int k = 0; k < st; k++)
+			{
+				cout << "Enter no. of houses in street " << c+1 <<": ";
+				cin >> h;
+				for(int m = 0; m < h; m++)
+				{
+					d++;
+					house.insert(d);
+				}
+				c++;	
+				street.insert(c, house.getHead());
+				house.setHead(NULL);
+			}
+			sector.insert(ch, street.getHead());
+			street.setHead(NULL);
+			a++;
+		}
+		block.insert(ch, sector.getHead());
+		sector.setHead(NULL);
+	}
+		}
+		void display()
+		{
+			system("cls");
+			cout << name << endl << endl;
+			block.display();
+		}
+};
+
+int main()
+{
+	Society s;
+	s.display();
+	system("pause");
+	return 0;
+}
