@@ -1,0 +1,166 @@
+#include<iostream>
+using namespace std;
+
+class Queue
+{
+    public:
+    static const int CAPACITY = 5;
+    int front, rare, size;
+    string customers[CAPACITY];
+    Queue()
+    {
+    	front = 0; rare = -1; size = 0;
+	}
+    bool isEmpty()
+    {
+        if(size == 0) return true;
+        return false;
+    }
+    bool isFull()
+    {
+        if(size == CAPACITY) return true;
+        return false;
+    }
+    void enQueue(string cus)
+    {
+        if(isFull()) cout << "\nWait all queues are full." << endl;
+        else{
+            rare++; size++;
+            customers[rare] = cus; 
+            if(front = -1) front = 0;
+        }
+        
+    }
+    string deQueue()
+    {
+        if(isEmpty()) return "Queue is empty";
+        else {
+            string poped = customers[front];
+            front++; size--;
+            return poped;
+        } 
+    }
+    void show()
+    {
+        for(int i  = front; i <= rare; i++)
+        {
+            cout << customers[i] << " ";
+        }
+    }
+   
+
+};
+
+ void refer(string customer, Queue &A, Queue &B, Queue &C)
+    {
+        if(A.size == B.size && A.size == C.size) 
+		{
+		A.enQueue(customer);
+	}
+        else{
+            if(A.size < B.size)
+            {
+                if(A.size < C.size) A.enQueue(customer);
+                else C.enQueue(customer);
+            }else{
+                if(B.size < C.size) B.enQueue(customer);
+                else
+                C.enQueue(customer);
+            }
+        }
+    }
+
+int main()
+{
+    Queue A, B, C;
+    cout << "1. if size of all counters is same:";
+    A.enQueue("Awais");
+    B.enQueue("Ahmad");
+    C.enQueue("Hamza");
+
+    cout << "\n\nBefore:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+    refer("Usama", A, B, C);
+
+    cout << "\n\nAfter:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+
+    cout << "\n\n2. if one counte is less than other 2:";
+    B.enQueue("Irfan");
+    
+    cout << "\n\nBefore:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+    refer("Mohsin", A, B, C);
+
+    cout << "\n\nAfter:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+
+    cout << "\n\n3. if two counters have lesser size than other 1:";
+    C.enQueue("Wasim");
+    cout << "\n\nBefore:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+    refer("Shahraiz", A, B, C);
+    
+    cout << "\n\nAfter:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+
+    cout << "\n\n4. if size of all counters is different:";
+    B.enQueue("Usman"); B.enQueue("Asad"); C.enQueue("Hassan");
+
+    cout << "\n\nBefore:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+    refer("Ali", A, B, C);
+
+    cout << "\n\nAfter:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+    cout << "\n\n5. if all counters are full:";
+    A.enQueue("Abu Bakr"); A.enQueue("Umar"); C. enQueue("Rafay");
+    cout << "\n\nBefore:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+    refer("Qasim", A, B, C);
+
+    cout << "\n\nAfter:" << endl;
+    cout << "A:"; A.show();
+    cout << endl;
+    cout << "B:"; B.show();
+    cout << endl;
+    cout << "C:"; C.show();
+
+    system("pause");
+}
