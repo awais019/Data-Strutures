@@ -1,0 +1,228 @@
+#include<iostream>
+#include"ArrayList.h"
+using namespace std;
+
+struct Node{
+	char data;
+	int weight;
+	Node *left;
+	Node *right;
+	Node()
+	{
+		
+	}
+	Node(char data, int weight)
+	{
+		this->data = data;
+		this->weight = weight;
+		left = NULL;
+		right = NULL;
+	}
+	Node(Node *item)
+	{
+		this->data = item->data;
+		this->weight = item->weight;
+		this->right = item->right;
+		this->left = item->left;
+	}
+};
+
+void swap(Node *x, Node *y)
+{
+	Node *temp = new Node(x->data, x->weight);
+	temp->left = x->left;
+	temp->right = x->right;
+	x->data = y->data;
+	x->weight = y->weight;
+	x->left = y->left;
+	x->right = y->right;
+    y->data = temp->data;
+	y->weight = temp->weight;
+	y->left = temp->left;
+	y->right = temp->right;
+}
+//void print(Node**, int);
+void minHeapify(Arraylist<Node*> *arr, int n, int i)
+{
+	int smallest = i;
+	int left = i * 2 + 1;
+	int right = i * 2 + 2;
+	if(left < n && arr->get(left)->weight < arr->get(smallest)->weight)
+	{
+		smallest = left;
+	}
+	if(right < n && arr->get(right)->weight < arr->get(smallest)->weight)
+	{
+		smallest = right;
+	}
+	if(smallest != i)
+	{
+		swap(arr->get(smallest), arr->get(i));
+	//	print(arr, 8);
+		minHeapify(arr, n, smallest);
+	}
+}
+
+void insertHeap(Arraylist<Node*> *arr, Node *item)
+{
+	int n = arr->getSize();
+	arr->add(item);
+	minHeapify(arr, n, n-1);
+}
+
+void constHeap(Arraylist<Node*> *arr)
+{
+	int n = arr->getSize();
+	for(int i = n/2 -1; i >= 0; --i)
+	{
+		//print(arr, i);
+		minHeapify(arr, n, i);
+	}
+}
+
+Node *getSmallest(Arraylist<Node*> *arr)
+{
+	int n = arr->getSize();
+	Node *item = new Node(arr->get(0));
+	swap(arr->get(0), arr->get(n-1));
+	arr->remove(arr->getSize()-1);
+	n = n-1;
+	minHeapify(arr, n, 0);	
+	return item;
+}
+
+void consHuffman(Arraylist<Node*> *arr)
+{
+	int n = arr->getSize();
+	//cout << n << endl << endl;
+	Node *item2;
+	Node *item3;
+	while(arr->getSize() > 2)
+	{
+		item2 = getSmallest(arr);
+		item3 = getSmallest(arr);
+		Node *item4 = new Node('\0', item2->weight+item3->weight);
+		item4->left = item2;
+		item4->right = item3;
+		insertHeap(arr, item4);
+	}
+		item2 = arr->get(0);
+		item3 = arr->get(1);
+		Node *item4 = new Node('\0', item2->weight+item3->weight);
+		item4->left = item2;
+		item4->right = item3;
+		arr->remove(0);
+		arr->remove(1);
+		arr->add(item4);
+}
+
+void printArr(int arr[], int size)
+{
+	for(int i = 0; i < size; i++)
+	{
+		cout << arr[i];
+	}
+	cout << endl;
+}
+
+void printCodes(Node* root, int arr[], int top)
+ 
+{
+ 
+    if (root->left != NULL) {
+ 
+        arr[top] = 0;
+        printCodes(root->left, arr, top + 1);
+    }
+ 
+    if (root->right != NULL) {
+ 
+        arr[top] = 1;
+        printCodes(root->right, arr, top + 1);
+    }
+ 
+    if (root->left == NULL && root->right == NULL) {
+ 
+        cout << root->data << " ";
+        printArr(arr, top);
+    }
+}
+
+void print(Arraylist<Node*> arr)
+{
+	for(int i = 0; i < arr.getSize(); i++)
+	{
+		Node* node = arr.get(i);
+		cout << node->weight << " ";
+	}
+	cout << endl << endl;
+}
+
+void removeDuplicate(char *str, int n)
+{
+   int index = 0;  
+    
+   for (int i=0; i<n; i++) {
+        
+     int j; 
+     for (j=0; j<i; j++)
+     {
+        if (str[i] == str[j])
+           break;
+       }
+      
+     
+     if (j == i)
+        str[index++] = str[i];
+   }
+}
+void removeSpaces(char *str)
+{
+    int count = 0;
+ 
+    for (int i = 0; str[i]; i++)
+    {
+        if (str[i] != ' ')
+            str[count++] = str[i]; 
+    }
+            
+    str[count] = '\0';
+}
+
+void encode(string name)
+{
+	Arraylist<Node*> arr;
+	cout << name << endl;
+	char sequence[name.length()];
+	for(int i = 0; i < name.length(); i++)
+	{
+		sequence[i] = name.at(i);
+	}
+	removeSpaces(sequence);
+	for(int i = 0; i < name.length(); i++)
+	{
+		cout <<  sequence[i];
+	}
+	cout << endl;
+	removeDuplicate(sequence, name.length());
+	for(int i = 0; sequence[i]; i++)
+	{
+		char ch = sequence[i];
+		int w = int(ch);
+		arr.add(new Node(ch, w));
+	}
+	constHeap(&arr);
+	consHuffman(&arr);
+	print(arr);
+	Node *node = arr.get(0);
+	int a[name.length()];
+	int top = 0;
+	printCodes(node, a, top);
+}
+
+int main()
+{
+	string name = "Hamza Mujahid";
+	encode(name);
+	return 0;
+}
