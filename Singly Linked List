@@ -1,201 +1,231 @@
 #include<iostream>
 using namespace std;
-
-struct Flight{
-int flight_ID;
-string name;
-int max_Capacity;
-void set_Flight(int flight_ID, string name, int max_Capacity)
-{
-    this->flight_ID = flight_ID;
-    this->name = name;
-    this->max_Capacity = max_Capacity;
-}
-void show_Flight()
-{
-    cout << "ID :" << flight_ID << endl;
-    cout << "Name :" << name << endl;
-    cout << "Max capacity :" << max_Capacity << endl;
-}
-};
+template<typename T>
 
 struct Node{
-    Flight data;
-    Node *next;
+	T data;
+	Node *next;
+	Node(T data)
+	{
+		this->data = data;
+		next = NULL;
+	}
 };
+template<typename T>
+
 class Singly_Linked_List{
-private:
-    Node *start;
-    Node* create(Flight data)
-    {
-        Node* newNode = new Node();
-        newNode->data = data;
-        newNode->next = NULL;
-        return newNode;
-    }
-public:
-    Singly_Linked_List()
-    {
-        start = NULL;
-    }
-    void insert_Start(Flight data)
-    {
-        Node *newNode = new Node();
-        newNode = create(data);
-        if(start == NULL)
-        {
-            start = newNode;
-        }
-        else{
-            newNode->next = start;
-            start = newNode;
-        }
-    }
-    void insert_Last(Flight data)
-    {
-        Node *newNode = new Node();
-        newNode = create(data);
-        Node *temp = start;
-        while(temp->next != NULL)
-        {
-            temp = temp->next;
-        }
-        temp->next = newNode;
-        newNode->next = NULL;
-    }
-    void insert_After(Flight data,int position)
-    {
-        Node *newNode = new Node();
-        newNode = create(data);
-        Node *temp;
-        temp = start;
-        for(int i = 1; i < position; i++)
-        {
-            temp = temp->next;
-            if(temp == NULL)
-            {
-                cout << "Less than " << position << "nodes in list." << endl;
-            }
-        }
-        newNode->next = temp->next;
-        temp->next = newNode;
-    }
+	Node<T> *head;
+	bool compare(T a, T b)
+	{
+		if(a > b)
+		{
+			return true;
+		}
+		return false;
+	}
+	void swap(Node<T> *a, Node<T> *b)
+	{
+		Node<T> *temp;
+		temp = a;
+		a = b;
+		b = temp;
+	}
+	public:
+	Singly_Linked_List()
+	{
+		head = NULL;
+		cout << "List is created.\n\n" << endl;
+	}	
+	void insert_Start(T data)
+	{
+		Node<T> *new_Node = new Node<T>(data);
+		if(head == NULL)
+		{
+			head = new_Node;
+		}
+		else
+		{
+			new_Node->next = head;
+			head = new_Node;
+		}
+	}
+	void insert_Last(T data)
+	{
+		Node<T> *new_Node = new Node<T>(data);
+		if(head == NULL)
+		{
+			head = new_Node;
+		}
+		else{
 
-   void delete_Start()
-   {
-       if(start == NULL)
-        {
-            cout << "List is empty." << endl;
-        }
-       else{
-       Node *temp = start;
-       start = start->next;
-       delete temp;
-       }
-   }
-    void delete_After(int position)
-    {
-        Node *temp = start;
-        if(start == NULL)
-        {
-            cout << "List is empty." << endl;
-        }
-        else
-        {
-            for(int i = 1; i < position; i++)
-            {
-                temp = temp->next;
-            }
-        }
-        Node *temp_2 = temp->next;
-        temp->next = temp_2->next;
-        delete temp_2;
-
-    }
-    void delete_Last()
-    {
-      Node *current = start;
-      Node *previous = start;
-      while(current->next != NULL)
-      {
-          previous = current;
-          current = current->next;
-      }
-      previous->next = NULL;
-      delete current;
-    }
-    void update(int position, Flight new_Data)
-    {
-        Node *temp = start;
-        for(int i = 1; i <= position; i++)
-        {
-            temp = temp->next;
-            if(temp == NULL)
-            cout << "Invalid position." << endl;
-        }
-        temp ->data = new_Data;
-    }
-    int search(Flight flight)
-    {
-        int count = 0;
-        Node *temp = start;
-        while(temp != NULL)
-        {
-            temp = temp->next;
-            count++;
-            if(temp->data.flight_ID == flight.flight_ID)
-            {
-                return count;
-            }
-        }
-        return 0;
-    }
-    
-    void display()
-    {
-        Node* temp;
-        temp = start;
-        while(temp != NULL)
-        {
-            cout << "----------------------------------------------------" << endl;
-            Flight temp_Flight;
-            temp_Flight = temp->data;
-            temp_Flight.show_Flight();
-            cout << endl;
-            temp = temp->next;
-        }
-    }
-
+			Node<T> *temp = head;
+			while(temp->next != NULL)
+			{
+				temp = temp->next;
+			}
+			temp->next = new_Node;
+		}
+	}
+	void insert_After(T data, int pos)
+	{
+		Node<T> *newNode = new Node<T>(data);
+		Node<T> *temp = head;
+		for(int i = 1; i < pos; i++)
+		{
+			temp = temp->next;
+		}
+		newNode->next = temp->next;
+		temp->next = newNode;
+	}
+	void insert_Sort(T data)
+	{
+		Node<T> *newNode = new Node<T>(data);
+		Node<T> *temp = head;
+		if(head == NULL)
+		{
+			head = newNode;
+		}
+		else if(compare(temp->data, data))
+		{
+			newNode->next = head;
+			head = newNode;
+		}
+		else
+		{
+		while(temp->next != NULL)
+		{
+				if((compare(temp->data, data)) && !(compare(temp->next->data, data)))
+				{
+					newNode->next = temp->next;
+					temp->next = newNode;
+					return;
+				}
+				temp = temp->next;
+		}
+		temp->next = newNode;
+		}
+	}
+	
+	void delete_Start()
+	{
+		if(head != NULL)
+		{
+		Node<T> *todelete = head;
+		head = head->next;
+		delete todelete;
+		}
+	}
+	void delete_Last()
+	{
+		if(head != NULL)
+		{
+		Node<T> *cur = head;
+		Node<T> *per = cur;
+		while(cur->next != NULL)
+		{
+			per = cur;
+			cur = cur->next;	
+		}
+		per->next = NULL;
+		delete cur;
+		}
+	}
+	void delete_After(int pos)
+	{
+		if(head != NULL)
+		{
+			Node<T> *temp = head;
+			for(int i = 1; i < pos; i++)
+			{
+				temp = temp->next;
+			}
+			Node<T> *todelete = temp->next;
+			temp->next = todelete->next;
+			delete todelete;
+		}
+	}
+	void sort()
+	{
+		if(head == NULL || head->next == NULL)
+		{
+			return;
+		}
+		else{
+			Node<T> *temp = head;
+			Node<T> *ptr;
+			while(temp != NULL)
+			{
+				ptr = temp->next;
+				while(ptr != NULL)
+				{
+					if(compare(temp->data, ptr->data))
+					{
+						if(temp == head)
+						{
+							Node<T> *cptr = head;
+							while(cptr->next != ptr)
+							{
+								cptr = cptr->next;
+							}
+							cptr->next = temp;
+							cptr = ptr->next;
+							ptr->next = head->next;
+							head->next = cptr;
+							cptr = head;
+							head = ptr;
+							ptr = cptr;
+							temp = head;
+						}
+						else{
+							Node<T> *cptr = head;
+							Node<T> *ctemp = head;
+							while(cptr->next != ptr)
+							{
+								cptr = cptr->next;
+							}
+							while(ctemp->next != temp)
+							{
+								ctemp = ctemp->next;
+							}
+							ctemp->next = ptr;
+							cptr->next = temp;
+							cptr = ptr->next;
+							ptr->next = temp->next;
+							temp->next = cptr;
+							ctemp = temp;
+							temp = ptr;
+							ptr = ctemp;	
+						}
+					}
+					ptr = ptr->next;
+				}
+				
+				temp = temp->next;
+			}
+		}
+	}	
+	bool search(T data)
+	{
+		Node<T> *temp = head;
+		while(temp != NULL)
+		{
+			if(temp->data == data)
+			{
+				return true;
+			}
+			temp = temp->next;
+		}
+		return false;
+	}
+	void display()
+	{
+		Node<T> *temp = head;
+		while(temp != NULL)
+		{
+			cout << temp->data << endl;
+			temp = temp->next;
+		}
+	}
 };
 
-int main()
-{
-    Singly_Linked_List *SLL = new Singly_Linked_List();
-    Flight flight;
-    flight.set_Flight(12, "pk12", 600);
-    SLL->insert_Start(flight);
-    flight.set_Flight(13,"pk13", 500);
-    SLL->insert_Last(flight);
-    flight.set_Flight(14, "pk14", 400);
-    SLL->insert_After(flight, 1);
-    flight.set_Flight(11, "pk11", 600);
-    SLL->insert_Start(flight);
-    flight.set_Flight(10, "pk10", 600);
-    SLL->insert_Start(flight);
-    flight.set_Flight(9, "pk09", 600);
-    SLL->insert_Start(flight);
-    SLL->delete_Start();
-    SLL->delete_After(1);
-    SLL->delete_Last();
-    flight.set_Flight(15, "pk15", 500);
-    SLL->update(2,flight);
-    if(SLL->search(flight) > 0)
-    {
-        cout << flight.flight_ID << " is present at " << SLL->search(flight) << " node." << endl;
-    }
-    else
-    cout << flight.flight_ID << " is present not present in list. " << endl;
-    SLL->display();
-    delete SLL;
-    system("pause");
-}
+
