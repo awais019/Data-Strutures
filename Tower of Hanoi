@@ -1,0 +1,33 @@
+#include<iostream>
+using namespace std;
+
+void print(int start, int end)
+{
+	cout << start << "->" << end <<endl;
+}
+
+void hanoi(int n, int start, int end)
+{
+	int other;
+	if(start != end)
+	{
+		if(n == 1) print(start, end);
+		else {
+			other = 6 - (start + end);
+			hanoi(n-1, start, other);
+			print(start, end);
+			hanoi(n-1, other, end);
+		}
+	}
+}
+
+int main()
+{
+	int n, start, end;
+	cout << "Enter number of disks :";
+	cin >> n;
+	cout << "Enter start and end rods :";
+	cin >> start >> end;
+	hanoi(n, start, end);
+	system("pause");
+}
