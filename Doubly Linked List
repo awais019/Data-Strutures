@@ -129,6 +129,25 @@ class Doubly_Linked_List{
         cout << item << " is not present in list." << endl;
 
     }
+    
+    void copy(Doubly_Linked_List &D)
+    {
+    	Node *temp = head;
+    	while(temp != NULL)
+    	{
+    		D.insert_Last(temp->data);
+    		temp = temp->next;
+		}
+	}
+    Node* getPointer(int pos)
+    {
+    	Node *temp = head;
+    	for(int i = 1; i < pos; i++)
+    	{
+    		temp = temp->next;
+		}
+		return temp;
+	}
     void display()
     {
         Node* temp = head;
@@ -145,24 +164,14 @@ class Doubly_Linked_List{
 int main()
 {
     Doubly_Linked_List DLL;
-    DLL.insert_Start(10);
-    DLL.insert_Start(20);
-    DLL.display();
-    DLL.insert_Start(30);
-    DLL.display();
-    DLL.insert_Last(40);
-    DLL.insert_Start(0);
-    DLL.display();
-    DLL.insert_After(5,3);
+    Doubly_Linked_List DLL_1;
+    for(int i = 1; i <= 15; i++)
+    {
+    	DLL.insert_Start(i+10);
+	}
+    
     DLL.display();
     DLL.delete_Start();
-    DLL.delete_Start();
     DLL.display();
-    DLL.delete_Last();
-    DLL.delete_Last();
-    DLL.display();
-    DLL.delete_After(1);
-    DLL.display();
-    DLL.search(30);
     system("pause");
 }
