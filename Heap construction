@@ -1,0 +1,85 @@
+#include<iostream>
+#include<math.h>
+using namespace std;
+
+void heapify(int *arr, int size)
+{
+	int par;
+//	size++;
+	int i = size-1;
+//	for(int i = size-1; i >= 0; --i)
+	while (i > 0){
+		par = floor((i-1)/2);
+		if(arr[i] < arr[par])
+		{
+			swap(arr[i], arr[par]);
+			i = par;
+		}
+		else 
+		{
+			return;
+		}
+	}
+	
+}
+
+void consHeap(int *arr, int N, int item, int lor)
+{
+	
+//	int ptr = N;
+//	int par;
+	if(arr[0] == 0)
+	{
+	arr[0] = item;
+	}
+	else
+	{
+			arr[(N*2)+lor] = item;
+			lor--;
+			N = (N*2)+lor+2;
+			//cout << N << endl;
+			heapify(arr, N);
+	}
+	
+}
+
+void swap(int *x, int *y)
+{
+	int *temp = x;
+	x = y;
+	y = temp;
+}
+
+
+void print(int *arr)
+{
+	int size = sizeof(arr)/sizeof(arr[0]);
+	for(int i = 0; i < 8; i++)
+	{
+		cout << arr[i] << " ";
+	}
+	cout << endl << endl;
+}
+
+int main()
+{
+	int arr[8];
+	for(int i = 0; i < 8; i++)
+	{
+		arr[i] = 0;
+	}
+	
+	consHeap(arr, 0, 22, 0);
+	consHeap(arr, 0, 5, 1);
+	consHeap(arr, 0, 11, 2);
+	consHeap(arr, 1, 19, 1);
+	consHeap(arr, 1, 2, 2);
+	consHeap(arr, 2, 11, 1);
+	consHeap(arr, 2, 25, 2);
+	consHeap(arr, 3, 6, 1);	
+//	int arr[] = {22, 5, 11, 19, 2, 11, 25, 5};
+//	print(arr);
+//	heapify(arr, 8);
+	print(arr);
+	return 0;
+}
