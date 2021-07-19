@@ -1,0 +1,391 @@
+#include<iostream>
+#include"Stack.h"
+using namespace std;
+template<typename T>
+struct node{
+	T data;
+	int count;
+	node *right;
+	node *left;
+	node()
+	{
+		right = NULL;
+		left = NULL;
+	}
+	node(T data)
+	{
+		this->data = data;
+		right = NULL;
+		left = NULL;
+		count = 1;
+	}
+};
+
+template<typename T>
+class BST{
+	private:
+		node<T> *root;
+		void deleteNoChild(node<T> *par, node<T> *ptr)
+		{
+			if(par != NULL)
+			{
+			if(ptr->data < par->data)
+			{
+				par->left = NULL;
+				delete ptr;
+			}
+			else
+			{
+				par->right = NULL;
+				delete ptr;
+			}
+		 	} 
+		 	else
+		 	{
+		 	root = NULL;
+		 	delete ptr;
+		 	}
+		}
+		 void deleteRChild(node<T> *par, node<T> *ptr)
+		 {
+		 	if(par != NULL)
+		 	{
+		 	if(ptr->data < par->data)
+			{
+				par->left = ptr->right;
+				delete ptr;
+			}
+			else
+			{
+				par->right = ptr->right;
+				delete ptr;
+			}
+			}
+			else
+			{
+				root = ptr->right;
+				delete ptr;			
+			}
+			
+		 }
+		 void deleteLChild(node<T> *par, node<T> *ptr)
+		 {
+		 	if(par != NULL)
+		 	{
+		 		if(ptr->data < par->data)
+			{
+				par->left = ptr->left;
+			    delete ptr;
+			}
+			else
+			{
+				par->right = ptr->left;
+				delete ptr;
+			}
+			}
+			else
+			{
+				root = ptr->left;
+				delete ptr;
+			}
+
+		 }
+		 void deleteChild(node<T> *par, node<T> *ptr)
+		 {
+		 	node<T> *inOr = ptr->right;
+		 	node<T> *temp;
+		 	while(inOr->left != NULL)
+		 	{
+		 		temp = inOr;
+		 		inOr = inOr->left;
+			}
+		 	temp->left = inOr->right;	
+			inOr->left = ptr->left;
+			inOr->right = ptr->right;
+		
+			if(par != NULL)
+			{
+			if(ptr->data < par->data)
+			{
+				par->left = inOr;
+				delete ptr;
+			}
+			else 
+			{
+				par->right = inOr;
+				delete ptr;
+			}
+		}
+		else
+		root = inOr;
+		
+		 }
+	public:
+		BST(){
+			root = NULL;
+	 }
+		
+		void search(T data, node<T> *LOC, node<T> *PAR)
+		{
+			node<T> *ptr;
+			node<T> *save;
+			if(root == NULL)
+			{
+				LOC = NULL;
+				PAR = NULL;
+				return;
+			}
+			else 
+			{
+				 if(data < root->data)
+				{
+					save = root;
+					ptr = root->left;
+				}
+				else 
+				{
+					save = root;
+					ptr = root->right;
+				}
+				while(ptr != NULL)
+				{
+				if(data < ptr->data)
+				{
+					save = ptr;
+					ptr = save->left;
+				}
+				else 
+				{
+					save = ptr;
+					ptr = save->right;
+				}
+				}
+				LOC = ptr;
+				PAR = save;
+			}
+		}
+		void insert(T data)
+		{
+			node<T> *newNode = new node<T>(data);
+			node<T> *LOC;
+			node<T> *PAR;
+			node<T> *ptr;
+			node<T> *save;
+			if(root == NULL)
+			{
+				LOC = NULL;
+				PAR = NULL;
+			//	return;
+			}
+			else 
+			{
+				 if(data < root->data)
+				{
+					save = root;
+					ptr = root->left;
+				}
+				else 
+				{
+					save = root;
+					ptr = root->right;
+				}
+				while(ptr != NULL)
+				{
+				if(data < ptr->data)
+				{
+					save = ptr;
+					ptr = save->left;
+				}
+				else 
+				{
+					save = ptr;
+					ptr = save->right;
+				}
+				}
+				LOC = ptr;
+				PAR = save;
+			}
+			if(LOC == NULL && PAR == NULL)
+			{
+				root = newNode;
+			}
+			else if(LOC == NULL && PAR != NULL)
+			{
+				if(data < PAR->data)
+				{
+					PAR->left = newNode;
+				}
+				else 
+				{
+					PAR->right = newNode;
+				}
+			}
+		}
+		void preOrder()
+		{
+			Stack<node<T>*> s;
+			s.push(NULL);
+			node<T> *temp = root;
+			step2:
+			while(temp != NULL)
+			{
+				cout << temp->data << " ";
+				if(temp->right != NULL)
+				{
+					s.push(temp->right);
+				}
+				temp = temp->left;
+			}
+			temp = s.pop();
+			if(temp != NULL)
+			goto step2;
+			cout << endl << endl;
+		}
+		void inOrder()
+		{
+			Stack<node<T>*> s;
+			s.push(NULL);
+			node<T> *temp = root;
+			step2:
+			while(temp != NULL)
+			{
+				s.push(temp);
+				temp = temp->left;
+			}
+			temp = s.pop();
+			while(temp != NULL)
+			{
+				cout << temp->data << " ";
+				if(temp->right != NULL)
+				{
+					temp = temp->right;
+					goto step2;
+				}
+				temp = s.pop();
+			}
+			cout << endl << endl;
+		}
+		void postOrder()
+		{
+			Stack<node<T>*> s;
+			s.push(NULL);
+			node<T> *temp = root;
+			step2:
+			while(temp != NULL)
+			{
+				s.push(temp, 0);
+				if(temp->right != NULL)
+				{
+					s.push(temp->right, -1);
+				}
+				temp = temp->left;
+			}
+			int val;
+			temp = s.pop(&val);
+			while(temp != NULL){
+			if(val == 0)
+			{
+				cout << temp->data << " ";
+				temp = s.pop(&val);
+			}
+			else
+			{
+				//val = -val;
+				goto step2;
+			}
+		}
+		cout << endl << endl;
+		}
+		void remove(T data)
+		{
+			if(root == NULL)
+			{
+				cout << "UnderFlow." << endl;
+				return;
+			}
+			else 
+			{
+				node<T> *ptr;
+				node<T> *save;
+				//node<T> *par;
+			 if(data == root->data)
+				{
+					save = NULL;
+				     ptr = root;
+				}
+				
+				else if(data < root->data)
+				{
+					save = root;
+				     ptr = root->left;
+				}
+				else {
+					save = root;
+					ptr = root->right;
+				}
+				while(ptr != NULL)
+				{
+					if(data == ptr->data)
+					{
+						break;
+					}
+					else if(data < ptr->data)
+				{
+					save = ptr;
+				     ptr = ptr->left;
+				}
+				else {
+					save = ptr;
+					ptr = ptr->right;
+				}	
+				}
+				
+					if(ptr->right == NULL && ptr->left == NULL)
+				{
+					deleteNoChild(save, ptr);
+				}
+				else if(ptr->right != NULL && ptr->left == NULL)
+				{
+					deleteRChild(save, ptr);
+				}
+				else if(ptr->right == NULL && ptr->left != NULL)
+				{
+					deleteLChild(save, ptr);
+				}
+				else
+				{
+					deleteChild(save, ptr);
+				}
+	
+	}
+}
+		
+};
+
+int main()
+{
+	BST<int> b;
+		//56,57,44,92,33,90,77,99,144,102,108,33,86,104
+
+	b.insert(56);
+	b.insert(57);
+	b.insert(44);
+	b.insert(92);
+	b.insert(33);
+	b.insert(90);
+	b.insert(77);
+	b.insert(99);
+	b.insert(144);
+	b.insert(102);
+	b.insert(108);
+	b.insert(33);
+	b.insert(86);
+	b.insert(104);
+	cout << "Pre order: " << endl;
+	b.preOrder();
+	cout << "\nIn order: " << endl;
+	b.inOrder();
+	cout << "\nPost order: " << endl;
+	b.postOrder();
+	system("pause");
+}
