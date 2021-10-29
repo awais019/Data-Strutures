@@ -1,0 +1,278 @@
+#include<iostream>
+#include <stdio.h>
+#include<stdlib.h>
+#include <sstream>
+using namespace std;
+
+class Node{
+	private:
+		string data;
+		Node *next;
+	public:
+		Node(string data = ""){
+			this->data = data;
+			next = NULL;
+		}
+		void setNext(Node *node){
+			this->next = node;
+		}
+		Node* getNext(){
+			return next;
+		}
+		void setData(string data){
+			this->data = data;
+		}
+		string getData(){
+			return data;
+		}
+		void display(){
+			cout << data;
+		}
+		~Node(){}
+};
+
+class Polynomial{
+	private:
+		Node *head;
+		int degree;
+		string poly;
+	public:
+		Polynomial(){
+			head = NULL;
+			degree = 0;
+		}
+		void setDegree(int degree = 0){
+			this->degree = degree;
+		}
+		int getDegree(){
+			return degree;
+		}
+		void insert(string data){
+			Node *newNode = new Node(data);
+			if(head == NULL)
+			head = newNode;
+			else{
+				Node *temp = head;
+				while(temp->getNext() != NULL){
+					temp = temp->getNext();
+				}
+				temp->setNext(newNode);
+			}
+		}
+		void deleteN(int n){
+			if(n > degree || n == 0){
+				cout << "Invalid!" << endl;
+			}
+			else{
+				while(n > 0){
+					string str = head->getData();
+					int i = str.find("^");
+					if(i != -1){
+					string str1 = "";
+					for(int j = i+1; j < str.length(); j++){
+						str1 += str.at(j);
+					}
+					stringstream ss;  
+					ss << str1;  
+					int exp;
+					ss >> exp;  
+					if(exp == degree){
+						Node *newNode = head;
+						head = head->getNext();
+						delete newNode;
+						n--;
+						degree--;
+					}else{
+					n--;
+					degree--;
+					}
+				}else{
+					int i = str.find("x");
+					if(i != -1){
+					if(degree == 1){
+						Node *newNode = head;
+						head = head->getNext();
+						delete newNode;
+						degree--;
+						n--;
+						}else{
+						n--;
+						degree--;
+							}
+						}
+					}	
+				}
+				string str = head->getData();
+					int i = str.find("^");
+					if(i != -1){
+					string str1 = "";
+					for(int j = i+1; j < str.length(); j++){
+						str1 += str.at(j);
+					}
+					stringstream ss;  
+					ss << str1;  
+					int exp;
+					ss >> exp;  
+					degree = exp;
+			}else{
+				int i = str.find("x");
+				if(i != -1)
+				degree = 1;
+				else
+				degree = 0;
+			}
+		}
+		}
+		void deleteL(){
+			head = NULL;
+		}
+		void traverse(){
+			if(head == NULL)
+			{
+				cout << "List is empty!";
+				return;
+			}
+		Node *temp = head;
+		while(temp->getNext() != NULL){
+			temp->display();
+			cout << " + ";
+			temp = temp->getNext();
+		}
+		temp->display();
+		cout << endl << endl;
+		}
+		void display(){
+			if(head == NULL)
+			{
+				cout << "List is empty!";
+				return;
+			}
+		Node *temp = head;
+			int d = degree;
+				while(temp != NULL){
+					string str = temp->getData();
+					int i = str.find("^");
+					if(i != -1){
+					string str1 = "";
+					for(int j = i+1; j < str.length(); j++){
+						str1 += str.at(j);
+					}
+					stringstream ss;  
+					ss << str1;  
+					int exp;
+					ss >> exp;  
+					if(exp == d){
+					temp->display();
+					cout << " + ";
+					d--;
+					temp = temp->getNext();
+				}else{
+					cout << "0x^" << d << " + ";
+					d--;
+				}
+				}else{
+						i = str.find("x");
+							if(i != -1){
+								while(d > 1){
+								cout << "0x^" << d << " + ";
+								d--;	
+								}
+							temp->display();
+							cout << " + ";	
+							temp = temp->getNext();
+							}else{
+							while(d > 0){
+								cout << "0x^" << d << " + ";
+								d--;	
+								}
+								temp->display();
+								temp = temp->getNext();
+							}
+							
+							
+						}
+						
+					}
+					cout << endl << endl;
+				}
+			
+};
+void removeSpaces(char*str)
+{
+    int count = 0;
+
+    for (int i = 0; str[i]; i++)
+        if (str[i] != ' ')
+            str[count++] = str[i];
+    str[count] = '\0';
+}
+int main(){
+	char ch;
+	Polynomial poly;
+	while(true){
+		system("cls");
+		cout << "Enter\n";
+		cout << "1. To insert polynomial\n2. To delete certain degree";
+		cout << "\n3. To delete entire equation\n4. To traverse the equation";
+		cout << "\n5. to display equation\n6. To exit\n";
+		cin >> ch;
+		if(ch == '1'){
+			system("cls");
+			int degree;
+				char arr[256];
+				cout << "Enter degree of polynomial: ";
+				cin >> degree;
+				fflush(stdin);
+				poly.setDegree(degree);
+				cout << "Enter equation: ";
+				cin.getline(arr, 256);
+				removeSpaces(arr);
+				int expressions = 1;
+				for(int i = 0; arr[i]; i++){
+					if(arr[i] == '+'){
+						expressions++;
+					}
+				}
+				string exp[expressions];
+				for(int i  = 0; i < expressions; i++){
+					exp[i] = "";
+				}
+				int cexp = 0;
+				for(int i  = 0; arr[i]; i++){
+					if(arr[i] == '+')
+					cexp++;
+					else{
+						exp[cexp] += arr[i];
+					}
+				}
+				for(int i = 0; i < expressions; i++){
+					
+					poly.insert(exp[i]);
+				}
+				system("pause");
+		}else if(ch == '2'){
+			system("cls");
+			int n;
+			cout << "Enter no. of degrees to delete: ";
+			cin >> n;
+			poly.deleteN(n);
+			system("pause");
+		}else if(ch == '3'){
+			system("cls");
+			poly.deleteL();
+			system("pause");
+		}else if(ch == '4'){
+			system("cls");
+			poly.traverse();
+			system("pause");
+		}else if(ch == '5'){
+			system("cls");
+			poly.display();
+			system("pause");
+		}else if(ch == '6'){
+			break;
+		}
+				
+	}
+	return 0;
+}
