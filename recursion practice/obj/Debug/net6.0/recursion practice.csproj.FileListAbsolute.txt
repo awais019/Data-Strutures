@@ -1,0 +1,15 @@
+C:\Users\Awais\Desktop\recursion practice\bin\Debug\net6.0\recursion practice.exe
+C:\Users\Awais\Desktop\recursion practice\bin\Debug\net6.0\recursion practice.deps.json
+C:\Users\Awais\Desktop\recursion practice\bin\Debug\net6.0\recursion practice.runtimeconfig.json
+C:\Users\Awais\Desktop\recursion practice\bin\Debug\net6.0\recursion practice.dll
+C:\Users\Awais\Desktop\recursion practice\bin\Debug\net6.0\recursion practice.pdb
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.csproj.AssemblyReference.cache
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.AssemblyInfoInputs.cache
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.AssemblyInfo.cs
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.csproj.CoreCompileInputs.cache
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.dll
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\refint\recursion practice.dll
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.pdb
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\recursion practice.genruntimeconfig.cache
+C:\Users\Awais\Desktop\recursion practice\obj\Debug\net6.0\ref\recursion practice.dll
